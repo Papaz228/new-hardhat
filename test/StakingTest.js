@@ -87,4 +87,13 @@ describe("Staking", function () {
     await stakingContract.connect(user1).claim();
     expect(await myToken.balanceOf(user1.address)).to.equal(100 + reward);
   });
+
+  it("should withdraw usdt tokens", async function() {
+    const {usdtToken, stakingContract, user1, owner} = await loadFixture(stakingFixture);
+    await usdtToken.connect(user1).approve(stakingContract.address, 100);
+    await stakingContract.connect(user1).buyToken(100);
+
+    await stakingContract.connect(owner).withdrawUsdt();
+    expect(await usdtToken.balanceOf(owner.address)).to.equal(ethers.BigNumber.from("10000000000000000000100"));
+  });
 });

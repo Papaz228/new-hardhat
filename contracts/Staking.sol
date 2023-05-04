@@ -90,4 +90,9 @@ contract Staking is Ownable{
         return reward;
     }
 
+    function withdrawUsdt() public onlyOwner{
+        require(usdtToken.balanceOf(address(this)) > 0, "No usdt in contract");
+        usdtToken.transfer(owner(), usdtToken.balanceOf(address(this)));
+    }
+
 }
